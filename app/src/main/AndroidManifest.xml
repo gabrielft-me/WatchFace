@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Calendar data comes from phone via Data Layer - no local permission needed -->
+    <uses-permission android:name="android.permission.health.READ_SLEEP" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@android:style/Theme.DeviceDefault">
+        
+        <!-- Watch Face Editor Activity (REQUIRED for Wear OS picker) -->
+        <activity
+            android:name=".watchface.WatchFaceConfigActivity"
+            android:exported="true"
+            android:label="@string/watchface_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="androidx.wear.watchface.editor.action.WATCH_FACE_EDITOR" />
+                <category android:name="com.google.android.wearable.watchface.category.WEARABLE_CONFIGURATION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <!-- Watch Face Service (Androidx Wear WatchFace API) -->
+        <service
+            android:name=".watchface.TimelineWatchFaceService"
+            android:exported="true"
+            android:label="@string/watchface_name"
+            android:directBootAware="true"
+            android:permission="android.permission.BIND_WALLPAPER">
+            
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+            
+            <intent-filter>
+                <action android:name="com.google.android.wearable.libraries.steampack.watchface.MockTime" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            
+            <meta-data
+                android:name="com.google.android.wearable.watchface.preview"
+                android:resource="@drawable/watchface_preview" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.preview_circular"
+                android:resource="@drawable/watchface_preview" />
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face_info" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.wearableConfigurationAction"
+                android:value="androidx.wear.watchface.editor.action.WATCH_FACE_EDITOR" />
+        </service>
+        
+        <service
+            android:name=".complication.MainComplicationService"
+            android:exported="true"
+            android:label="@string/complication_label"
+            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
+            <intent-filter>
+                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+                android:value="SHORT_TEXT" />
+            <meta-data
+                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+                android:value="0" />
+        </service>
+        <service
+            android:name=".tile.MainTileService"
+            android:exported="true"
+            android:label="@string/tile_label"
+            android:permission="com.google.android.wearable.permission.BIND_TILE_PROVIDER">
+            <intent-filter>
+                <action android:name="androidx.wear.tiles.action.BIND_TILE_PROVIDER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="androidx.wear.tiles.PREVIEW"
+                android:resource="@drawable/tile_preview" />
+        </service>
+
+        <uses-library
+            android:name="com.google.android.wearable"
+            android:required="true" />
+        <uses-library
+            android:name="wear-sdk"
+            android:required="false" />
+        <!--
+               Set to true if your app is Standalone, that is, it does not require the handheld
+               app to run.
+        -->
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
+
+        <activity
+            android:name=".presentation.MainActivity"
+            android:exported="true"
+            android:taskAffinity=""
+            android:theme="@style/MainActivityTheme.Starting">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

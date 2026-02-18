@@ -1,0 +1,2 @@
+com.example.myapplication.mobile
+string app_name
