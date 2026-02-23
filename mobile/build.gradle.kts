@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.myapplication.mobile"
+    namespace = "com.twentyfourcalendar.watchface.mobile"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.myapplication"
+        applicationId = "com.twentyfourcalendar.watchface"
         minSdk = 26
         targetSdk = 36
         versionCode = 1

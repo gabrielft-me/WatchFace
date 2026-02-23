@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.myapplication"
+    namespace = "com.twentyfourcalendar.watchface"
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId = "com.example.myapplication"
+        applicationId = "com.twentyfourcalendar.watchface"
         minSdk = 30
         targetSdk = 36
         versionCode = 1
